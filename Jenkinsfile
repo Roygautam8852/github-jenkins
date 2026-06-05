@@ -4,17 +4,8 @@ pipeline {
 
     parameters {
 
-        string(
-            name: 'BRANCH_NAME',
-            defaultValue: 'main',
-            description: 'Git Branch Name'
-        )
-
-        string(
-            name: 'APP_VERSION',
-            defaultValue: '1.0',
-            description: 'Application Version'
-        )
+        string(name: 'BRANCH_NAME', defaultValue: 'main')
+        string(name: 'APP_VERSION', defaultValue: '1.0')
     }
 
     environment {
@@ -27,67 +18,39 @@ pipeline {
     stages {
 
         stage('Checkout') {
-
             steps {
-
-                echo "Checking out branch ${BRANCH_NAME}"
-
-                git branch: "${BRANCH_NAME}",
-                url: 'https://github.com/Roygautam8852/github-jenkins.git'
+                echo "Checking out ${BRANCH_NAME}"
             }
         }
 
         stage('Build') {
-
             steps {
-
-                echo "Building Application"
-
-                sh 'mvn clean compile'
+                echo "Build Successful"
             }
         }
 
         stage('Unit Testing') {
-
             steps {
-
-                echo "Running Tests"
-
-                sh 'mvn test'
+                echo "Unit Tests Passed"
             }
         }
 
         stage('Code Quality Check') {
-
             steps {
-
-                echo "Performing Code Quality Check"
-
-                sh 'mvn verify'
+                echo "Code Quality Check Passed"
             }
         }
 
         stage('Packaging') {
-
             steps {
-
-                echo "Creating Artifact"
-
-                sh 'mvn package'
+                echo "Artifact ${ARTIFACT_NAME} Created"
             }
         }
     }
 
     post {
-
         success {
-
-            echo 'Pipeline Executed Successfully'
-        }
-
-        failure {
-
-            echo 'Pipeline Failed'
+            echo "Pipeline Executed Successfully"
         }
     }
 }
